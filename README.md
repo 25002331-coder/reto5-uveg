@@ -5,3 +5,5 @@
 
 # MODIFICACION DEL README PARA FINES DIDÁCTICOS. 
    Primer ciclo de modificación local → push al remoto.
+## Cambio exclusivo de la rama pruebas
+Esta linea solo existe en la rama pruebas, no en main.
