@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reto 5 - Jorge Uriel Lopez Amezcua | UVEG</title>
+  <style>
+    /* ============== Reset ============== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(ellipse at top, #1a0b3d 0%, #0a0520 50%, #000010 100%);
+      color: #fff;
+      overflow: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* ============== Estrellas titilantes ============== */
+    .stars {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .star {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle linear infinite;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; transform: scale(0.8); }
+      50%      { opacity: 1;   transform: scale(1.2); }
+    }
+
+    /* ============== Estrella fugaz esporadica ============== */
+    .shooting-star {
+      position: fixed;
+      top: 10%;
+      left: -100px;
+      width: 100px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #fff, #fff);
+      border-radius: 50%;
+      animation: shoot 8s ease-in infinite;
+      animation-delay: 3s;
+      opacity: 0;
+      z-index: 1;
+      box-shadow: 0 0 8px #fff;
+    }
+    .shooting-star.s2 {
+      top: 25%;
+      animation-delay: 6s;
+      animation-duration: 7s;
+    }
+    @keyframes shoot {
+      0%   { transform: translateX(0) translateY(0); opacity: 0; }
+      10%  { opacity: 1; }
+      60%  { opacity: 1; }
+      100% { transform: translateX(120vw) translateY(60vh); opacity: 0; }
+    }
+
+    /* ============== Header UVEG ============== */
+    header {
+      position: relative;
+      z-index: 5;
+      padding: 18px 32px;
+      background: linear-gradient(90deg, rgba(90,45,130,0.95) 0%, rgba(140,70,180,0.85) 100%);
+      border-bottom: 2px solid rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 20px rgba(90,45,130,0.4);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand-logo {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #5A2D82;
+      font-weight: 900;
+      font-size: 22px;
+      letter-spacing: -1px;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.2);
+    }
+    .brand-text h1 {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+    .brand-text p {
+      font-size: 12px;
+      opacity: 0.85;
+      letter-spacing: 0.3px;
+    }
+    .header-right {
+      text-align: right;
+      font-size: 12px;
+      opacity: 0.9;
+    }
+    .header-right strong { display: block; font-size: 13px; }
+
+    /* ============== Contenido principal ============== */
+    main {
+      position: relative;
+      z-index: 4;
+      min-height: calc(100vh - 120px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+    }
+
+    .card {
+      max-width: 720px;
+      width: 100%;
+      padding: 48px 48px;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 22px;
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.5),
+        0 0 80px rgba(140,70,180,0.15) inset;
+      text-align: center;
+      animation: fadeUp 1s cubic-bezier(0.22,1,0.36,1) 0.2s both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(212, 132, 252, 0.18);
+      border: 1px solid rgba(212, 132, 252, 0.5);
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #d4b5ff;
+      margin-bottom: 24px;
+    }
+
+    .title {
+      font-size: 44px;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+      background: linear-gradient(120deg, #fff 0%, #d4b5ff 70%, #fff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 16px;
+      opacity: 0.85;
+      margin-bottom: 32px;
+      letter-spacing: 0.3px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 28px 0 8px;
+      text-align: left;
+    }
+    .info-item {
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      transition: transform 0.25s, background 0.25s;
+    }
+    .info-item:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.08);
+    }
+    .info-item .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.7;
+      color: #d4b5ff;
+      margin-bottom: 4px;
+    }
+    .info-item .value {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+    .info-item.full {
+      grid-column: 1 / -1;
+    }
+
+    .student-name {
+      margin: 28px 0 12px;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .student-tag {
+      font-size: 13px;
+      opacity: 0.75;
+      letter-spacing: 0.5px;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0; left: 0;
+      width: 100%;
+      padding: 12px 24px;
+      font-size: 11px;
+      text-align: center;
+      opacity: 0.55;
+      letter-spacing: 0.5px;
+      z-index: 5;
+      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.4) 100%);
+    }
+
+    /* ============== Cohete ============== */
+    .rocket-wrap {
+      position: fixed;
+      bottom: -120px;
+      left: -120px;
+      width: 90px;
+      height: 90px;
+      z-index: 3;
+      animation: flyRocket 12s linear infinite;
+      animation-delay: 1.5s;
+      transform-origin: center;
+      filter: drop-shadow(0 0 14px rgba(255,180,80,0.55));
+    }
+    @keyframes flyRocket {
+      0% {
+        transform: translate(0, 0) rotate(-45deg);
+        opacity: 0;
+      }
+      5%  { opacity: 1; }
+      95% { opacity: 1; }
+      100% {
+        transform: translate(120vw, -120vh) rotate(-45deg);
+        opacity: 0;
+      }
+    }
+
+    /* Llama animada del cohete */
+    .flame {
+      transform-origin: 50% 0%;
+      animation: flicker 0.18s ease-in-out infinite alternate;
+    }
+    @keyframes flicker {
+      from { transform: scaleY(1) scaleX(1); opacity: 0.95; }
+      to   { transform: scaleY(1.25) scaleX(0.85); opacity: 0.7; }
+    }
+
+    /* Particulas/estela del cohete */
+    .rocket-trail {
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      width: 4px;
+      height: 4px;
+      background: #ffb347;
+      border-radius: 50%;
+      box-shadow: 0 0 12px #ff7e3a;
+      animation: trail 1s linear infinite;
+      opacity: 0;
+    }
+    @keyframes trail {
+      0%   { opacity: 1; transform: translateX(-50%) scale(1); }
+      100% { opacity: 0; transform: translateX(-50%) translateY(40px) scale(0.2); }
+    }
+
+    /* ============== Responsive ============== */
+    @media (max-width: 640px) {
+      .card { padding: 32px 24px; }
+      .title { font-size: 32px; }
+      .info-grid { grid-template-columns: 1fr; }
+      header { padding: 14px 18px; }
+      .brand-text h1 { font-size: 14px; }
+      .header-right { text-align: left; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ====== Fondo estrellado ====== -->
+  <div class="stars" id="stars"></div>
+  <div class="shooting-star"></div>
+  <div class="shooting-star s2"></div>
+
+  <!-- ====== Header UVEG ====== -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">U</div>
+      <div class="brand-text">
+        <h1>Universidad Virtual del Estado de Guanajuato</h1>
+        <p>Ingenieria en Desarrollo de Software</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <strong>UVEG</strong>
+      <span>Educacion a distancia</span>
+    </div>
+  </header>
+
+  <!-- ====== Contenido principal ====== -->
+  <main>
+    <div class="card">
+      <span class="pill">Modulo 19 &middot; Unidad 3</span>
+
+      <h2 class="title">Reto 5</h2>
+      <p class="subtitle">Ponte a prueba &mdash; Desarrollo Agil y Colaborativo</p>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="label">Modulo</div>
+          <div class="value">Desarrollo Agil y Colaborativo</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Unidad</div>
+          <div class="value">Unidad 3</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Reto</div>
+          <div class="value">Reto 5 &mdash; Ponte a prueba</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Tema</div>
+          <div class="value">Uso de Git y comandos basicos</div>
+        </div>
+        <div class="info-item full">
+          <div class="label">Repositorio remoto</div>
+          <div class="value">Demostracion del ciclo Git: clone, pull, commit, push, branch, merge</div>
+        </div>
+      </div>
+
+      <div class="student-name">Jorge Uriel Lopez Amezcua</div>
+      <div class="student-tag">Estudiante &middot; Ingenieria en Desarrollo de Software</div>
+    </div>
+  </main>
+
+  <!-- ====== Cohete animado ====== -->
+  <div class="rocket-wrap" aria-hidden="true">
+    <svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- Llama -->
+      <g class="flame" transform="translate(50,72)">
+        <path d="M -8 0 Q -10 14 0 26 Q 10 14 8 0 Z"
+              fill="url(#flameGrad)" />
+        <path d="M -4 4 Q -5 14 0 20 Q 5 14 4 4 Z"
+              fill="#ffffff" opacity="0.85" />
+      </g>
+
+      <!-- Cuerpo cohete -->
+      <g transform="translate(50,50)">
+        <!-- Aletas -->
+        <path d="M -14 12 L -22 22 L -14 22 Z" fill="#7c3aed" />
+        <path d="M 14 12 L 22 22 L 14 22 Z" fill="#7c3aed" />
+
+        <!-- Cuerpo principal -->
+        <path d="M -14 -22 Q -14 -28 0 -36 Q 14 -28 14 -22 L 14 18 L -14 18 Z"
+              fill="url(#bodyGrad)" stroke="#fff" stroke-width="1.3"/>
+
+        <!-- Ventana -->
+        <circle cx="0" cy="-10" r="6" fill="#1a0b3d" stroke="#d4b5ff" stroke-width="1.5"/>
+        <circle cx="-2" cy="-12" r="2" fill="#fff" opacity="0.9"/>
+
+        <!-- Detalle de banda -->
+        <rect x="-14" y="6" width="28" height="3" fill="#5A2D82" opacity="0.6"/>
+      </g>
+
+      <!-- Gradientes -->
+      <defs>
+        <linearGradient id="bodyGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%"  stop-color="#e8e8ff" />
+          <stop offset="50%" stop-color="#ffffff" />
+          <stop offset="100%" stop-color="#b8b8d8" />
+        </linearGradient>
+        <linearGradient id="flameGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"  stop-color="#fffacd" />
+          <stop offset="50%" stop-color="#ffb347" />
+          <stop offset="100%" stop-color="#ff5733" />
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- ====== Footer ====== -->
+  <footer>
+    UVEG &middot; Ingenieria en Desarrollo de Software &middot; Reto 5 &middot; Unidad 3
+  </footer>
+
+  <!-- ====== Generador de estrellas ====== -->
+  <script>
+    (function() {
+      const container = document.getElementById('stars');
+      const total = 140;
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < total; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        const size = Math.random() * 2.2 + 0.4;
+        s.style.width  = size + 'px';
+        s.style.height = size + 'px';
+        s.style.top    = (Math.random() * 100) + '%';
+        s.style.left   = (Math.random() * 100) + '%';
+        s.style.animationDuration = (Math.random() * 3 + 1.5) + 's';
+        s.style.animationDelay    = (Math.random() * 4) + 's';
+        s.style.opacity = (Math.random() * 0.6 + 0.3).toString();
+        frag.appendChild(s);
+      }
+      container.appendChild(frag);
+    })();
+  </script>
+
+</body>
+</html>
